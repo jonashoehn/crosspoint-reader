@@ -14,6 +14,7 @@
 #include "CrossPointState.h"
 #include "KOReaderCredentialStore.h"
 #include "MappedInputManager.h"
+#include "activities/apps/AppsActivity.h"
 #include "activities/boot_sleep/BootActivity.h"
 #include "activities/boot_sleep/SleepActivity.h"
 #include "activities/browser/OpdsBookBrowserActivity.h"
@@ -22,6 +23,8 @@
 #include "activities/reader/ReaderActivity.h"
 #include "activities/settings/SettingsActivity.h"
 #include "activities/util/FullScreenMessageActivity.h"
+#include "apps/AppRegistry.h"
+#include "apps/HelloWorldApp.h"
 #include "fontIds.h"
 
 #define SPI_FQ 40000000
@@ -233,10 +236,15 @@ void onGoToBrowser() {
   enterNewActivity(new OpdsBookBrowserActivity(renderer, mappedInputManager, onGoHome));
 }
 
+void onGoToApps() {
+  exitActivity();
+  enterNewActivity(new AppsActivity(renderer, mappedInputManager, onGoHome));
+}
+
 void onGoHome() {
   exitActivity();
   enterNewActivity(new HomeActivity(renderer, mappedInputManager, onContinueReading, onGoToReaderHome, onGoToSettings,
-                                    onGoToFileTransfer, onGoToBrowser));
+                                    onGoToFileTransfer, onGoToBrowser, onGoToApps));
 }
 
 void setupDisplayAndFonts() {
@@ -299,6 +307,11 @@ void setup() {
   Serial.printf("[%lu] [   ] Starting CrossPoint version " CROSSPOINT_VERSION "\n", millis());
 
   setupDisplayAndFonts();
+
+  // Register apps
+  AppRegistry::getInstance().registerApp("Hello World", [](GfxRenderer& r, MappedInputManager& m) -> App* {
+    return new HelloWorldApp(r, m);
+  });
 
   exitActivity();
   enterNewActivity(new BootActivity(renderer, mappedInputManager));
