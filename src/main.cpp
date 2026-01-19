@@ -25,6 +25,7 @@
 #include "activities/util/FullScreenMessageActivity.h"
 #include "apps/AppRegistry.h"
 #include "apps/HelloWorldApp.h"
+#include "apps/WifiSpammerApp.h"
 #include "fontIds.h"
 
 #define SPI_FQ 40000000
@@ -311,6 +312,9 @@ void setup() {
   // Register apps
   AppRegistry::getInstance().registerApp("Hello World", [](GfxRenderer& r, MappedInputManager& m) -> App* {
     return new HelloWorldApp(r, m);
+  });
+  AppRegistry::getInstance().registerApp("WiFi Spammer", [](GfxRenderer& r, MappedInputManager& m) -> App* {
+    return new WifiSpammerApp(r, m);
   });
 
   exitActivity();
