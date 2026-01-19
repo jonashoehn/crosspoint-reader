@@ -25,6 +25,7 @@
 #include "activities/util/FullScreenMessageActivity.h"
 #include "apps/AppRegistry.h"
 #include "apps/HelloWorldApp.h"
+#include "apps/Magic8BallApp.h"
 #include "apps/WifiSpammerApp.h"
 #include "fontIds.h"
 
@@ -315,6 +316,9 @@ void setup() {
   });
   AppRegistry::getInstance().registerApp("WiFi Spammer", [](GfxRenderer& r, MappedInputManager& m) -> App* {
     return new WifiSpammerApp(r, m);
+  });
+  AppRegistry::getInstance().registerApp("Magic 8-Ball", [](GfxRenderer& r, MappedInputManager& m) -> App* {
+    return new Magic8BallApp(r, m);
   });
 
   exitActivity();
