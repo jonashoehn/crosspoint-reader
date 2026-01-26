@@ -23,7 +23,7 @@ void HomeActivity::taskTrampoline(void* param) {
 }
 
 int HomeActivity::getMenuItemCount() const {
-  int count = 4;  // Browse files, File transfer, Apps, Settings
+  int count = 4;  //  My Library, File transfer, Apps, Settings
   if (hasContinueReading) count++;
   if (hasOpdsUrl) count++;
   return count;
@@ -169,7 +169,7 @@ void HomeActivity::loop() {
     // Calculate dynamic indices based on which options are available
     int idx = 0;
     const int continueIdx = hasContinueReading ? idx++ : -1;
-    const int browseFilesIdx = idx++;
+    const int myLibraryIdx = idx++;
     const int opdsLibraryIdx = hasOpdsUrl ? idx++ : -1;
     const int fileTransferIdx = idx++;
     const int appsIdx = idx++;
@@ -177,8 +177,8 @@ void HomeActivity::loop() {
 
     if (selectorIndex == continueIdx) {
       onContinueReading();
-    } else if (selectorIndex == browseFilesIdx) {
-      onReaderOpen();
+    } else if (selectorIndex == myLibraryIdx) {
+      onMyLibraryOpen();
     } else if (selectorIndex == opdsLibraryIdx) {
       onOpdsBrowserOpen();
     } else if (selectorIndex == fileTransferIdx) {
@@ -503,9 +503,9 @@ void HomeActivity::render() {
 
   // --- Bottom menu tiles ---
   // Build menu items dynamically
-  std::vector<const char*> menuItems = {"Browse Files", "File Transfer", "Apps", "Settings"};
+  std::vector<const char*> menuItems = {"My Library", "File Transfer", "Apps", "Settings"};
   if (hasOpdsUrl) {
-    // Insert Calibre Library after Browse Files
+    // Insert Calibre Library after My Library
     menuItems.insert(menuItems.begin() + 1, "Calibre Library");
   }
 
@@ -544,7 +544,7 @@ void HomeActivity::render() {
     renderer.drawText(UI_10_FONT_ID, textX, textY, label, !selected);
   }
 
-  const auto labels = mappedInput.mapLabels("", "Confirm", "Up", "Down");
+  const auto labels = mappedInput.mapLabels("", "Select", "Up", "Down");
   renderer.drawButtonHints(UI_10_FONT_ID, labels.btn1, labels.btn2, labels.btn3, labels.btn4);
 
   const bool showBatteryPercentage =
